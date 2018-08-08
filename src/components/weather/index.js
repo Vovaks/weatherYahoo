@@ -10,6 +10,7 @@ class Weather extends Component {
     constructor(props) {
         super(props);
         this.handleCityNameChange = this.handleCityNameChange.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this)
         this.state = {
             weatherData: {
                 location: {},
@@ -38,24 +39,31 @@ class Weather extends Component {
             .get(this.createUrl())
             .then((res) => {
                 if (res) {
-                    let resWeather = JSON.parse(res.text);// console.log('queryCount', resWeather.query.count);
-                    let results = resWeather.query.results.channel; // console.log('results', results);
-
-                    this.setState({
-                        weatherData: {
-                            units: results.units,
-                            location: results.location,
-                            condition: results.item.condition,
-                            wind: results.wind,
-                            forecast: results.item.forecast
-                        }
-                    });
+                    let resWeather = JSON.parse(res.text);
+                    if (resWeather.query.count !== 0) {
+                        let results = resWeather.query.results.channel;
+                        this.setState({
+                            weatherData: {
+                                units: results.units,
+                                location: results.location,
+                                condition: results.item.condition,
+                                wind: results.wind,
+                                forecast: results.item.forecast
+                            }
+                        });
+                    }
                 }
             })
     }
 
     handleCityNameChange(e) {
         this.setState({cityName: e.target.value})
+    }
+
+    handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            this.loadFromYahooWeatherApi();
+        }
     }
 
     componentDidMount() {
@@ -74,6 +82,7 @@ class Weather extends Component {
                             className="form-control"
                             placeholder={"Enter City Name"}
                             required
+                            onKeyPress={this.handleKeyPress}
                         />
                     </div>
                     <div className={'col-2'}>
