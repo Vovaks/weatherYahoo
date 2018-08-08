@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import request from "superagent";
+import WeatherForecasts from './WeatherForecasts';
+import WeatherTitle from "./WeatherTitle";
+import WeatherDate from "./WeatherDate";
 
 class Weather extends Component {
 
@@ -9,20 +12,12 @@ class Weather extends Component {
         this.state = {
             weatherData: {
                 location: {
-                    city: '',
-                    country: '',
                 },
                 units: {
-                    speed: '',
-                    temperature: ''
                 },
                 condition: {
-                    code: '32',
-                    temp: '',
-                    text: ''
                 },
                 wind: {
-                    speed: ''
                 }
             },
             cityName: 'Tallinn',//TODO:can get coordinate from navigator.geolocation
@@ -49,8 +44,8 @@ class Weather extends Component {
                     let resWeather = JSON.parse(res.text);
                     let results = resWeather.query.results.channel;
 
-                    console.log('queryCount', resWeather.query.count);
-                    console.log('results', results);
+                    // console.log('queryCount', resWeather.query.count);
+                    // console.log('results', results);
 
                     this.setState({
                         weatherData: {
@@ -61,7 +56,6 @@ class Weather extends Component {
                             forecast: results.item.forecast
                         }
                     });
-                    console.log('weatherData', this.state.weatherData);
                 }
             })
     }
@@ -75,15 +69,6 @@ class Weather extends Component {
     }
 
     render() {
-        let city = this.state.weatherData.location.city;
-        let country = this.state.weatherData.location.country;
-        let windSpeed = this.state.weatherData.wind.speed;
-        let unitsSpeed = this.state.weatherData.units.speed;
-        let unitsTemperature = this.state.weatherData.units.temperature;
-        let temp = this.state.weatherData.condition.temp;
-        let weatherText = this.state.weatherData.condition.text;
-        let code = this.state.weatherData.condition.code;
-
         return (
             <div className={"Weather"}>
                 <input
@@ -101,18 +86,19 @@ class Weather extends Component {
                 >
                     {"Search"}
                 </button>
-                <div>
-                    <h2>{city}, {country}</h2><br/>
-                </div>
-                <div className={"weatherToday"}>
-                    {temp} {unitsTemperature}
-                    <img alt={weatherText} src={"http://l.yimg.com/a/i/us/we/52/" + code + ".gif"}/><br/>
-                    {weatherText}<br/>
-                    Wind speed: {windSpeed}({unitsSpeed})
-                </div>
-                <div className={"forecast"}>
-
-                </div>
+                <WeatherTitle
+                    location={this.state.weatherData.location}
+                />
+                <WeatherDate
+                    wind={this.state.weatherData.wind}
+                    units={this.state.weatherData.units}
+                    condition={this.state.weatherData.condition}
+                />
+                <WeatherForecasts
+                    forecast={this.state.weatherData.forecast}
+                    units={this.state.weatherData.units}
+                    name={this.state.cityName}
+                />
             </div>
         );
     }
