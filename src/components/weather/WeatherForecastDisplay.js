@@ -4,7 +4,7 @@ const WeatherForecastDisplay = (props) => {
     if (!props.forecast.code) return <p>Loading...</p>;
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <div className="row">
                 <div className="col-sm">
                     {props.forecast.day}

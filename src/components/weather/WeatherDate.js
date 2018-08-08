@@ -15,13 +15,13 @@ export default class WeatherDate extends Component {
             <div className={"component"} key={"weatherToday"}>
                 <div className="container">
                     <div className="row">
-                        <div className="column col-6 col-sm-2">
+                        <div className="col-sm-6">
                             <div className={"display-1"}>
                                 {temp}
                                 {unitsTemperature}
                             </div>
                         </div>
-                        <div className="column col-6 col-sm-2">
+                        <div className="col-sm-6">
                             <img className={'weatherDateImg'} alt={weatherText}
                                  src={"http://l.yimg.com/a/i/us/we/52/" + code + ".gif"}/>
                             <div className={"display-5"}>
