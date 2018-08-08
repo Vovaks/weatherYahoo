@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import request from "superagent";
+import {Button} from 'react-bootstrap';
 import WeatherForecasts from './WeatherForecasts';
 import WeatherTitle from "./WeatherTitle";
 import WeatherDate from "./WeatherDate";
@@ -11,14 +12,10 @@ class Weather extends Component {
         this.handleCityNameChange = this.handleCityNameChange.bind(this);
         this.state = {
             weatherData: {
-                location: {
-                },
-                units: {
-                },
-                condition: {
-                },
-                wind: {
-                }
+                location: {},
+                units: {},
+                condition: {},
+                wind: {}
             },
             cityName: 'Tallinn',//TODO:can get coordinate from navigator.geolocation
             format: 'json',// json/xml
@@ -41,11 +38,8 @@ class Weather extends Component {
             .get(this.createUrl())
             .then((res) => {
                 if (res) {
-                    let resWeather = JSON.parse(res.text);
-                    let results = resWeather.query.results.channel;
-
-                    // console.log('queryCount', resWeather.query.count);
-                    // console.log('results', results);
+                    let resWeather = JSON.parse(res.text);// console.log('queryCount', resWeather.query.count);
+                    let results = resWeather.query.results.channel; // console.log('results', results);
 
                     this.setState({
                         weatherData: {
@@ -71,21 +65,29 @@ class Weather extends Component {
     render() {
         return (
             <div className={"Weather"}>
-                <input
-                    type="text"
-                    onChange={this.handleCityNameChange}
-                    id="cityName"
-                    className="form-control"
-                    placeholder={"Enter City Name"}
-                    required
-                />
-                <button
-                    className="Search"
-                    onClick={this.loadFromYahooWeatherApi.bind(this)}
-                    type="button"
-                >
-                    {"Search"}
-                </button>
+                <div className={'row'}>
+                    <div className={'col-10'}>
+                        <input
+                            type="text"
+                            onChange={this.handleCityNameChange}
+                            id="cityName"
+                            className="form-control"
+                            placeholder={"Enter City Name"}
+                            required
+                        />
+                    </div>
+                    <div className={'col-2'}>
+                        <Button
+                            bsStyle="primary"
+                            className="searchBtn"
+                            onClick={this.loadFromYahooWeatherApi.bind(this)}
+                            type="button"
+                        >
+                            {"Search"}
+                        </Button>
+                    </div>
+
+                </div>
                 <WeatherTitle
                     location={this.state.weatherData.location}
                 />
@@ -94,11 +96,29 @@ class Weather extends Component {
                     units={this.state.weatherData.units}
                     condition={this.state.weatherData.condition}
                 />
-                <WeatherForecasts
-                    forecast={this.state.weatherData.forecast}
-                    units={this.state.weatherData.units}
-                    name={this.state.cityName}
-                />
+
+                <div className={"forecast"}>
+                    <h1>Forecast</h1>
+
+                    <div className="row">
+                        <div className="col-sm">
+                            <h3>Day:</h3>
+                        </div>
+                        <div className="col-sm">
+                            <h3>Weather:</h3>
+                        </div>
+                        <div className="col-sm">
+                            <h3>Higher:</h3>
+                        </div>
+                        <div className="col-sm">
+                            <h3>Lower:</h3>
+                        </div>
+                    </div>
+                    <WeatherForecasts
+                        forecast={this.state.weatherData.forecast}
+                        units={this.state.weatherData.units}
+                    />
+                </div>
             </div>
         );
     }

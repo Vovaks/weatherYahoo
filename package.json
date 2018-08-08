@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "react": "^16.4.2",
+    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.2",
+    "react-icons-kit": "^1.1.7",
     "react-scripts": "1.1.4",
     "superagent": "^3.8.3"
   },

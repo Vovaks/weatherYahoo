@@ -3,15 +3,19 @@ import WeatherForecastDisplay from './WeatherForecastDisplay'
 
 export default class WeatherForecasts extends Component {
     render() {
-        if(!this.props.forecast)return <p>Loading...</p>;
+        if (!this.props.forecast) return <p>Loading...</p>;
 
         let forecasts = this.props.forecast;
-        return forecasts.map((currentForecast) => (
+        let units = this.props.units;
 
-            <div className = {'weather-Forcast-Grid'} key = {currentForecast.date}>
-                <WeatherForecastDisplay
-                    forecast = {currentForecast}
-                />
+        return forecasts.map((currentForecast, index) => (
+            <div className={'component'} key={index}>
+                <div className={'weather-Forcast-Grid'} key={currentForecast.date}>
+                    <WeatherForecastDisplay
+                        forecast={currentForecast}
+                        units={units}
+                    />
+                </div>
             </div>
         ));
     }
